@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-server${srv}
+  namespace: simple-fio
+  labels:
+    app: fio-server
+spec:
+  containers:
+    - image: quay.io/abose/fio:latest
+      name: fio-container
+      namespace: benchmark-operator
+      securityContext:
+        capabilities:
+          add: ["SYS_ADMIN"]
+      command: ["/bin/sh", "-c"]
+      args: ["/usr/bin/fio --server"]
+      ports:
+        - containerPort: 8765
+      volumeDevices:
+        - name: data-vol${srv}
+          devicePath: /dev/rbd0
+      #volumeMounts:
+      #  - name: data-vol
+      #    mountPath: "/mnt/pvc"
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - fio-server
+          topologyKey: "kubernetes.io/hostname"
+  restartPolicy: Never
+  volumes:
+    - name: data-vol${srv}
+      persistentVolumeClaim:
+        claimName: fio-pv-claim${srv}

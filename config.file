@@ -1,0 +1,25 @@
+# OCS Parameters
+#---------------
+storage_type=ocs-storagecluster-ceph-rbd
+
+# FIO Execution Parameters
+#-------------------------
+server=3
+sample=3
+
+# Any fio supported parameters can be provided.
+#----------------------------------------------
+# ioengine=libaio	# hard-coded
+# filename=/dev/rbd0	# hard-coded for ocs-storagecluster-ceph-rbd
+# directory=/mnt/pvc	# hard-coded for ocs-storagecluster-cephfs
+#----------------------------------------------
+# Whatever is provided after this line will be directly put in the fio job file.
+# ---------------------------------------------
+direct=1
+rw=write
+bs=256k
+numjobs=1
+time_based=1
+runtime=60
+size=10G
+iodepth=4
