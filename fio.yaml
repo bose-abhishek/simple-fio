@@ -12,7 +12,7 @@ spec:
           add: ["SYS_ADMIN"]
       command: ["/bin/sh", "-c"]
       args: 
-        - "for itr in $(seq 1 ${sample1});
+        - "for itr in $(seq 1 ${sample});
            do
             echo *********Fio_Job**************;
             /usr/bin/fio --output=/tmp/output.log ${final_serverIPs}; 
