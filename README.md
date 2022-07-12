@@ -10,8 +10,10 @@ As the name suggests, this is a simplified implementation of fio to be executed 
 
 ## Check output
 
-All clients average results:
-$ oc logs fio-client -f
+All clients average results: 
+<code> $ oc logs fio-client -f 
+</code>
 
-Detailed fio output:
-$ oc exec -it fio-client -- tail -n20 -f /tmp/output.log
+Detailed fio output: 
+<code> $ oc exec -it fio-client -- tail -n20 -f /tmp/output.log 
+</code>
