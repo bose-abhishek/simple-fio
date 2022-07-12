@@ -6,4 +6,8 @@ As the name suggests, this is a simplified implementation of fio to be executed 
 2. cd simple-fio/
 3. Edit config file and set the appropriate parameters required.
 4. sh simple_fio.sh
+5. Once the test is over, execute the delete script (sh delete_simple_fio.sh)
+
+## Check output
+$ oc logs fio-client -f
 
