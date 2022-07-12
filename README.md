@@ -9,5 +9,9 @@ As the name suggests, this is a simplified implementation of fio to be executed 
 5. Once the test is over, execute the delete script (sh delete_simple_fio.sh)
 
 ## Check output
+
+All clients average results:
 $ oc logs fio-client -f
 
+Detailed fio output:
+$ oc exec -it fio-client -- tail -n20 -f /tmp/output.log
