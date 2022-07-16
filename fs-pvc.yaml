@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: fio-pv-claim1
+  name: fio-pv-claim${srv}
 spec:
   storageClassName: ocs-storagecluster-cephfs
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 5Gi
+      storage: ${storage}Gi
