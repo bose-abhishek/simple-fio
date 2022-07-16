@@ -6,20 +6,22 @@ storage_type=ocs-storagecluster-ceph-rbd
 #-------------------------
 server=3
 sample=3
+# Storage size should be larger than numjob x size; make sure there is no invisible trailing characters
+storage(Gi)=500
 
 # Any fio supported parameters can be provided.
 #----------------------------------------------
-# ioengine=libaio	# hard-coded
-# filename=/dev/rbd0	# hard-coded for ocs-storagecluster-ceph-rbd
-# directory=/mnt/pvc	# hard-coded for ocs-storagecluster-cephfs
+# ioengine=libaio	# Fixed
+# filename=/dev/rbd0	# Fixed for ocs-storagecluster-ceph-rbd
+# directory=/mnt/pvc	# Fixed for ocs-storagecluster-cephfs
 #----------------------------------------------
 # Whatever is provided after this line will be directly put in the fio job file.
 # ---------------------------------------------
 direct=1
 rw=write
-bs=256k
+bs=4096k
 numjobs=1
 time_based=1
-runtime=60
+runtime=30
 size=10G
-iodepth=4
+iodepth=1
