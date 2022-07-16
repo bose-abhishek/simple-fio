@@ -19,7 +19,7 @@ fi
 file=job.fio
 echo "[global]" > ${file}
 echo "ioengine=libaio" >> ${file}
-tail -n +18 config.file >> ${file}
+tail -n +20 config.file >> ${file}
 echo "" >> ${file}
 echo "[device]" >> ${file}
 if [ `grep storage_type config.file | awk -F "=" '{print $2}'` == "ocs-storagecluster-ceph-rbd" ]; then
@@ -35,9 +35,11 @@ fi
 #----------------------------------------------------------
 server=`grep server config.file | awk -F "=" '{print $2}'`
 sample=`grep sample config.file | awk -F "=" '{print $2}'`
+storage=`grep "storage(Gi)" config.file | awk -F "=" '{print $2}'`
 final_serverIPs=""
 
 export sample=${sample}
+export storage=${storage}
 #> final_serverIPs
 for ((i=0;i<$server;i++));
 do
@@ -51,6 +53,7 @@ do
 done
 for ((i=0;i<$server;i++));
 do
+	pod=`echo fio-server${i}`
 	serverIP=`oc get pod ${pod} --template '{{.status.podIP}}'`
 	final_serverIPs=`echo ${final_serverIPs} --client=${serverIP} --remote-config /tmp/job.fio `
 done
