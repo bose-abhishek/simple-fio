@@ -35,7 +35,7 @@ spec:
           fi;
 	  for iter in $(seq 1 ${sample});
             do
-            echo \"*********Fio_Job_$iter**************\" ;
+            echo \"*********Fio_Job**************\" ;
             mkdir /mnt/fio; cd /mnt/fio;
             echo \"Sample: ${iter}\" ;
             /usr/bin/fio --output=summary.log ${fio_args_job}; 
