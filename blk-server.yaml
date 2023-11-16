@@ -7,12 +7,24 @@ metadata:
     app: fio-server
 spec:
   containers:
-    - image: quay.io/abose/fio:latest
+    #- image: quay.io/abose/fio:latest
+    - image: quay.io/abose/fio-s390x:latest
       name: fio-server
       namespace: simple-fio
-#      securityContext:
-#        capabilities:
-#          add: ["SYS_ADMIN"]
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "200m"
+        limits:
+          memory: "256Mi"
+          cpu: "200m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+          - ALL
       command: ["/bin/sh", "-c"]
       args: ["/usr/bin/fio --server"]
       #args: ["/usr/bin/fio --server=ip6:"]

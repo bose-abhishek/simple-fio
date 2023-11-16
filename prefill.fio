@@ -1,0 +1,13 @@
+[global]
+ioengine=libaio
+direct=1
+numjobs=8
+size=5G
+filename=/dev/rbd
+
+[fio_test] 
+time_based=0 
+rw=write 
+bs=128K 
+iodepth=1 
+group_reporting

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 server=`grep server config.file | awk -F "=" '{print $2}'`
-device_type=`grep storage_type config.file | awk -F "=" '{print $2}'`
+device_type=`grep "^storage_type" config.file | awk -F "=" '{print $2}'`
 
 oc delete -f client.yaml
 

@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-storage
+  labels:
+     app: fio-storage
+spec:
+  volumes:
+    - name: storage-fio
+      persistentVolumeClaim:
+        claimName: fio-data-pvc
+  containers:
+    - name: fio-storage
+      image: registry.redhat.io/rhel7
+      volumeMounts:
+        - name: storage-fio
+          mountPath: /mnt
+      command: ["/bin/sh", "-c"]
+      args:
+        - "sleep 36000"
+
+---                                                                                                           

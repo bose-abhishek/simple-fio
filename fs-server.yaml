@@ -14,7 +14,8 @@ spec:
         capabilities:
           add: ["SYS_ADMIN"]
       command: ["/bin/sh", "-c"]
-      args: ["/usr/bin/fio --server=ip6:"]
+      args: ["/usr/bin/fio --server"]
+      #args: ["/usr/bin/fio --server=ip6:"]
       ports:
         - containerPort: 8765
       #volumeDevices:

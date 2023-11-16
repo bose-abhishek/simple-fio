@@ -5,23 +5,49 @@ metadata:
   namespace: simple-fio
 spec:
   containers:
-    - image: quay.io/abose/fio:latest
+    #- image: quay.io/abose/fio:latest
+    - image: quay.io/abose/fio-s390x:latest
+      securityContext:
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+          - ALL
+      resources:
+        requests:
+          memory: "10Gi"
+          cpu: "2"
+        limits:
+          memory: "30Gi"
+          cpu: "2"
       name: fio-client
+      volumeMounts:
+        - name: data-vol
+          mountPath: "/mnt/"
       command: ["/bin/sh", "-c"]
       args: 
-        - "echo *********Prefill**************;
-            /usr/bin/fio --output=/tmp/prefill_output.log ${fio_args_prefill};
+        - "if [ ${prefill} == \"true\" ]; then 
+            echo \"*********Prefill**************\";
+            /usr/bin/fio --output=/mnt/prefill_output.log ${fio_args_prefill};
             sleep 10;
-            grep -A6 \"All clients\" /tmp/prefill_output.log;
-	    sleep 60;
-	for itr in $(seq 1 ${sample});
-        	do
-            	echo *********Fio_Job_Sample**************;
-		echo $itr;
-            	/usr/bin/fio --output=/tmp/output.log ${fio_args_job}; 
-            	sleep 10; 
-            	grep -A6 \"All clients\" /tmp/output.log;
-            	sleep 50; 
+            grep -A6 \"All clients\" /mnt/prefill_output.log;
+	    sleep 60; 
+          fi;
+	  for iter in $(seq 1 ${sample});
+            do
+            echo \"*********Fio_Job_$iter**************\" ;
+            mkdir /mnt/fio; cd /mnt/fio;
+            echo \"Sample: ${iter}\" ;
+            /usr/bin/fio --output=summary.log ${fio_args_job}; 
+            sleep 10; 
+            grep -A6 \"All clients\" summary.log;
+            sleep 50; 
+            cd ..; tar cf fio_$(date +%y_%m_%d_%H_%M).tar fio; rm -rf fio;
 	done;
           "
+  volumes:
+    - name: data-vol
+      persistentVolumeClaim:
+        claimName: fio-data-pvc
   restartPolicy: Never
