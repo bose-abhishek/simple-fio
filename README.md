@@ -33,6 +33,10 @@ All clients: (groupid=0, jobs=3): err= 0: pid=0: Tue Jul 12 18:56:24 2022
 ```
 
 ### Detailed fio output
+For detailed fio output or to check fio output of previous fio run, one can view the fio output directory stored in the pvc `fio-data-pvc`
 ```
-$ oc exec -it fio-client -- tail -n20 -f /tmp/output.log 
+# oc rsh fio-storage
+sh-4.2# cd /mnt
+sh-4.2# ls
+fio_23_10_29_18_58.tar
 ```
