@@ -5,8 +5,7 @@ metadata:
   namespace: simple-fio
 spec:
   containers:
-    #- image: quay.io/abose/fio:latest
-    - image: quay.io/abose/fio-s390x:latest
+    - image: quay.io/abose/fio:latest
       securityContext:
         allowPrivilegeEscalation: false
         seccompProfile:
