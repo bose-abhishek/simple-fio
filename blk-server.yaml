@@ -7,8 +7,7 @@ metadata:
     app: fio-server
 spec:
   containers:
-    #- image: quay.io/abose/fio:latest
-    - image: quay.io/abose/fio-s390x:latest
+    - image: quay.io/abose/fio:latest
       name: fio-server
       namespace: simple-fio
       resources:
