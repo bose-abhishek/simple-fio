@@ -41,6 +41,10 @@ There are three sections in the config.file:
       * log_avg_msec=5000 # 5 seconds for 5/10 minute jobs
       * log_avg_msec=1000 # 10 seconds for more than 10 minute jobs
 
+* Apart from the above mentioned fio parameters, few of the parameters are automatically set in the fio job file depending on the workload type.
+    * When `rw` is set as `write`, `fsync_on_close=1` and `create_on_open=1` is applied.
+    * When `rw` is set as any random workload, `randrepeat=0` and `allrandrepeat=0` is applied.
+  
 ## Check output
 
 ### All clients average results 
