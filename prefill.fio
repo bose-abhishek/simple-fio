@@ -1,7 +1,7 @@
 [global]
 ioengine=libaio
 direct=1
-numjobs=8
+numjobs=4
 size=5G
 filename=/dev/rbd
 
