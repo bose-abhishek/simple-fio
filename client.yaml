@@ -26,24 +26,41 @@ spec:
           mountPath: "/mnt/"
       command: ["/bin/sh", "-c"]
       args: 
-        - "if [ ${prefill} == \"true\" ]; then 
+        - "echo \"Initializing and Configuring FIO jobs\"; sleep 30;
+          source /tmp/job_info.txt;
+          if [ ${prefill} == \"true\" ]; then
             echo \"*********Prefill**************\";
-            /usr/bin/fio --output=/mnt/prefill_output.log ${fio_args_prefill};
+            /usr/bin/fio --output=/mnt/prefill_output.log --client=/tmp/server_ip.txt /tmp/prefill.fio;
             sleep 10;
-            grep -A6 \"All clients\" /mnt/prefill_output.log;
-	    sleep 60; 
+            if [[ ${server} -eq 1 ]]; then
+                grep -A6 \"^fio_test\" /mnt/prefill_output.log;
+              else
+                grep -A6 \"^All clients\" /mnt/prefill_output.log;
+              fi;
+	    sleep 60;
           fi;
-	  for iter in $(seq 1 ${sample});
+	  for bs_count in $(seq 1 ${num_of_bs});
+          do
+            for iter in $(seq 1 ${sample});
             do
-            echo \"*********Fio_Job**************\" ;
-            mkdir /mnt/fio; cd /mnt/fio;
-            echo \"Sample: ${iter}\" ;
-            /usr/bin/fio --output=summary.log ${fio_args_job}; 
-            sleep 10; 
-            grep -A6 \"All clients\" summary.log;
-            sleep 50; 
-            cd ..; tar cf fio_$(date +%y_%m_%d_%H_%M).tar fio; rm -rf fio;
-	done;
+              echo \"*********Fio_Job**************\" ;
+              mkdir /mnt/fio; cd /mnt/fio;
+              bs=`grep ^bs /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
+              rw=`grep ^rw /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
+              numjobs=`grep ^numjobs /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
+              iodepth=`grep ^iodepth /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
+              echo \"$(date) Sample=${iter}; Block_Size=${bs}; job=${rw}; numjobs=${numjobs}; iodepth=${iodepth}\" ;
+              /usr/bin/fio --output=summary.log --client=/tmp/server_ip.txt /tmp/job${bs_count}.fio;
+              sleep 10;
+              if [[ ${server} -eq 1 ]]; then
+                grep -A6 \"^fio_test\" summary.log;
+              else
+                grep -A6 \"^All clients\" summary.log;
+              fi;
+              sleep 50;
+              cd ..; tar cf fio_${bs}_${rw}_sample${iter}_$(date +%y_%m_%d_%H_%M).tar fio; rm -rf fio;
+	    done;
+          done;
           "
   volumes:
     - name: data-vol

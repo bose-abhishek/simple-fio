@@ -1,3 +1,2 @@
-oc delete pvc fio-data-pvc
-oc delete pod fio-storage
+oc delete -f fio-storage.yaml
 oc delete ns simple-fio

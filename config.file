@@ -5,12 +5,12 @@ storage_type=ocs-storagecluster-ceph-rbd
 
 # FIO Execution Parameters
 #-------------------------
-server=6
-sample=1
+server=3
+sample=3
 # Prefill options: true|false
 prefill=true
 # Storage size should be larger than 'numjob x size'; make sure there is no invisible trailing characters
-storage(Gi)=500
+storage(Gi)=200
 
 #----------------------------------------------
 # ioengine=libaio	# Fixed
@@ -19,8 +19,9 @@ storage(Gi)=500
 #----------------------------------------------
 direct=1
 rw=randread
-bs=8k
-numjobs=8
+# multiple block sizes can be mentioned with space separated
+bs=8k 16k
+numjobs=4
 time_based=1
 runtime=300
 size=5G
