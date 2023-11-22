@@ -16,7 +16,7 @@ To execute a fio test, one needs to only change the parameters in the config.fil
 There are three sections in the config.file:
 1. OCS Parameters
    - storage_type: This defines the undelying storage class to be used.
-   - options: ocs-storagecluster-ceph-rbd | ocs-storagecluster-cephfs
+     * options: ocs-storagecluster-ceph-rbd | ocs-storagecluster-cephfs
 
 2. FIO Execution Parameters
    - server: Number of fio server pods (usually this equals to the number of ODF workers or multiples of it). FIO test is actually executed on it, RBD volumes or CephFS mounts are present in these pods.
