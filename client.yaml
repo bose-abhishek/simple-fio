@@ -45,7 +45,7 @@ spec:
           do
             for iter in $(seq 1 ${sample});
             do
-              echo ""; echo \"*********Fio_Job**************\" ;
+              echo \" \"; echo \"*********Fio_Job**************\" ;
               mkdir /mnt/fio; cd /mnt/fio;
               bs=`grep ^bs /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
               rw=`grep ^rw /tmp/job${bs_count}.fio | awk -F \"=\" '{print $2}'`;
