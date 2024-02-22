@@ -10,7 +10,7 @@ spec:
     - image: quay.io/abose/fio:latest
       name: fio-server
       namespace: simple-fio
-            resources:
+      resources:
         requests:
           memory: "2Gi"
           cpu: "1"
