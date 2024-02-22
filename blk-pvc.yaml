@@ -4,7 +4,7 @@ metadata:
   name: fio-pv-claim${srv}
   namespace: simple-fio
 spec:
-  storageClassName: ocs-storagecluster-ceph-rbd
+  storageClassName: ${storage_type}
   volumeMode: Block
   accessModes:
     - ReadWriteOnce

@@ -27,7 +27,7 @@ There are three sections in the config.file:
 
 3. FIO parameters: These parameters are used exactly as defined in the [FIO documentation](https://fio.readthedocs.io/en/latest/fio_doc.html)
    - [direct](https://fio.readthedocs.io/en/latest/fio_doc.html#cmdoption-arg-direct): If value is true, use non-buffered I/O. This is usually O_DIRECT.
-   - [rw](https://fio.readthedocs.io/en/latest/fio_doc.html#cmdoption-arg-readwrite): Type of I/O pattern.
+   - [rw](https://fio.readthedocs.io/en/latest/fio_doc.html#cmdoption-arg-readwrite): Type of I/O pattern. Multiple workloads can be specified at a time. Workloads will run sequentially as mentioned in the config file.
      * rw=read | write | randread | randwrite | randrw
    - [bs](https://fio.readthedocs.io/en/latest/fio_doc.html#block-size): The block size in bytes used for I/O units. Unlike fio, here multiple block sizes can be mentioned with space separated.
      * bs=8k 16k

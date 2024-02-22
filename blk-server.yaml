@@ -12,11 +12,11 @@ spec:
       namespace: simple-fio
       resources:
         requests:
-          memory: "128Mi"
-          cpu: "200m"
+          memory: "2Gi"
+          cpu: "1"
         limits:
-          memory: "256Mi"
-          cpu: "200m"
+          memory: "5Gi"
+          cpu: "2"
       securityContext:
         allowPrivilegeEscalation: false
         seccompProfile:
@@ -32,9 +32,6 @@ spec:
       volumeDevices:
         - name: data-vol${srv}
           devicePath: /dev/rbd
-      #volumeMounts:
-      #  - name: data-vol${srv}
-      #    mountPath: "/mnt/pvc"
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

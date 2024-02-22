@@ -4,7 +4,7 @@ metadata:
   name: fio-data-pvc
   namespace: simple-fio
 spec:
-  storageClassName: ocs-storagecluster-cephfs
+  storageClassName: ${sc_type}
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
