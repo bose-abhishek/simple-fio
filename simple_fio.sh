@@ -19,7 +19,7 @@ fi
 #----------------------------
 if [[ $(oc get pvc | grep fio-data-pvc | awk '{print $1}') != "fio-data-pvc" ]];
         then
-	sc_type=$(oc get sc | grep cephfs | awk '{print $1}')
+	sc_type=$(oc get sc | grep ^ocs-storagecluster-cephfs | awk '{print $1}')
 	export sc_type=${sc_type}
 	envsubst < fio-data-pvc.yaml | oc create -f -
         #oc create -f fio-data-pvc.yaml
