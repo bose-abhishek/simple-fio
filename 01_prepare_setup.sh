@@ -17,7 +17,7 @@ pfile=prefill.fio
 job_info=job_info.txt
 
 run_test () {
-	/bin/bash initial_sfio_check.sh
+	/bin/bash preflight_check.sh
 
 	/bin/bash delete_simple_fio.sh
 
