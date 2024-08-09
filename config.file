@@ -1,0 +1,36 @@
+# OCS Parameters
+#---------------
+storage_type=ceph-rbd
+#storage_type=ocs-storagecluster-cephfs
+
+# FIO Execution Parameters
+#-------------------------
+# platform options: bm|hcp
+platform=hcp
+# If hcp option is selected, make sure that consumers.lst is properly 
+#populated with cluster kubeconfig contexts
+server=3
+sample=3
+# Prefill options: true|false
+prefill=true
+# Storage size should be larger than 'numjob x size'; make sure there 
+#is no invisible trailing characters
+storage(Gi)=200
+
+#----------------------------------------------
+# ioengine=libaio	# Fixed
+# filename=/dev/rbd0	# Fixed for ocs-storagecluster-ceph-rbd
+# directory=/mnt/pvc	# Fixed for ocs-storagecluster-cephfs
+#----------------------------------------------
+direct=1
+#rw=randwrite randread
+#bs=4K 8K 16K 64K
+#iodepth=8
+rw=write read
+bs=256K 1024K 4096K
+iodepth=4
+numjobs=4
+time_based=1
+runtime=300
+size=10G
+log_avg_msec=5000

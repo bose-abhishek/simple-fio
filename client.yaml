@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-client
+  namespace: simple-fio
+  labels:
+    app: fio-client
+spec:
+  containers:
+    - image: quay.io/abose/fio:latest
+      securityContext:
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+          - ALL
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "1"
+        limits:
+          memory: "1Gi"
+          cpu: "1"
+      name: fio-client
+      volumeMounts:
+        - name: data-vol
+          mountPath: "/mnt/"
+        - name: cm-server-ip
+          mountPath: /media
+        - name: cm-fio-job-info
+          mountPath: /home
+        - name: cm-fio-test-job
+          mountPath: /tmp
+      command: ["/bin/sh", "-c"]
+      args: 
+        - "echo \"Initializing and Configuring FIO jobs\"; sleep 5;
+          source /home/job_info.txt; if [ -d /mnt/fio ]; then rm -rf /mnt/fio; fi;
+          iter=1; itr=1;
+          for workload in $wl;
+          do
+            source /home/job_info.txt;
+            for blocksize in $bs;
+            do
+              for iter in $(seq 1 ${sample});
+              do
+                echo \" \"; echo \"*********Fio_Job**************\" ;
+                mkdir /mnt/fio; cd /mnt/fio;
+                bs=${blocksize};
+                rw=${workload};
+                numjobs=`grep ^numjobs /tmp/job.fio | awk -F \"=\" '{print $2}'`;
+                iodepth=`grep ^iodepth /tmp/job.fio | awk -F \"=\" '{print $2}'`;
+                cp /tmp/job.fio /mnt/fio/job.fio;
+                if [ $rw == \"write\" ]; then echo \"fsync_on_close=1\" >> /mnt/fio/job.fio; echo \"create_on_open=1\" >> /mnt/fio/job.fio;
+                elif [[ $rw =~ ^[rand*] ]]; then echo \"randrepeat=0\" >> /mnt/fio/job.fio; echo \"allrandrepeat=0\" >> /mnt/fio/job.fio;
+                fi;
+                echo \"$(date) Sample=${iter}; Server=${server}; Block_Size=${bs}; Job=${rw}; Numjobs=${numjobs}; IOdepth=${iodepth}\" ;
+                BS=${bs} RW=${rw} /usr/bin/fio --output=summary.log --client=/media/server_ip.txt /mnt/fio/job.fio;
+                sleep 30; 
+                if [[ ${rw} == \"randrw\" ]]; then 
+                  line=12;
+                else 
+                  line=6;
+                fi;
+                if [[ ${server} -eq 1 ]]; then
+                  grep -A$line} \"^fio_test\" summary.log;
+                else
+                  grep -A${line} \"^All clients\" summary.log;
+                fi;
+                sleep 30;
+                cd ..; mv fio fio_${bs}_${rw}_sample${iter}_$(date +%y_%m_%d_%H_%M); rm -rf fio;
+              done;
+            itr=$(($itr+1));
+            done;
+          done;
+          "
+  volumes:
+    - name: data-vol
+      persistentVolumeClaim:
+        claimName: fio-data-pvc
+    - name: cm-server-ip
+      configMap:
+        name: fio-server-ip
+    - name: cm-fio-job-info
+      configMap:
+        name: fio-job-info
+    - name: cm-fio-test-job
+      configMap:
+        name: fio-test-job
+  restartPolicy: Never

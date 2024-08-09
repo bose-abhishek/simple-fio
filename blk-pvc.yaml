@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fio-pv-claim${srv}
+  namespace: simple-fio
+spec:
+  storageClassName: ${sc}
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: ${storage}Gi
