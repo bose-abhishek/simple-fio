@@ -63,7 +63,7 @@ spec:
                   line=6;
                 fi;
                 if [[ ${server} -eq 1 ]]; then
-                  grep -A$line} \"^fio_test\" summary.log;
+                  grep -A13 \"^fio_test\" summary.log;
                 else
                   grep -A${line} \"^All clients\" summary.log;
                 fi;
