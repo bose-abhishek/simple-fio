@@ -9,9 +9,11 @@ In this version we support testing on native ODF and also ODF on HCP clusters.
 1. git clone https://github.com/bose-abhishek/simple-fio.git
 2. cd simple-fio/
 3. Edit config file and set the appropriate parameters required. Described in detail in the next section.
-4. sh simple_fio.sh
-5. Once the test is over, execute the delete script (sh delete_simple_fio.sh) to delete the test setup (fio server and client pods).
-6. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (sh nuke_simple-fio.sh). 
+4. Add consumers in the consumers.lst if using HCP.
+5. sh 01_prepare_setup.sh
+6. Once the prefill is complete, execute sh 02_run_tests.sh
+7. Once the test is over, execute the delete script (sh delete_simple_fio.sh) to delete the test setup (fio server and client pods).
+8. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (sh nuke_simple-fio.sh). 
 
 ## Test Configuration
 To execute a fio test, one needs to only change the parameters in the config.file.
