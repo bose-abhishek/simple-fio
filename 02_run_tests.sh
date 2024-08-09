@@ -6,7 +6,7 @@ job_info=job_info.txt
 platform=`grep "^platform" config.file | awk -F "=" '{print $2}'`
 
 prepare_test () {
-	/bin/bash initial_sfio_check.sh
+	/bin/bash preflight_check.sh
 
 	if [[ $(oc get pods | grep fio-client | awk '{print $1}') == "fio-client" ]];
         	then
