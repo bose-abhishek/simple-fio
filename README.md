@@ -6,8 +6,8 @@ This repo is an improved version of [simple-fio](https://github.com/bose-abhishe
 In this version we support testing on native ODF and also ODF on HCP clusters.
 
 ## How to run
-1. git clone https://github.com/bose-abhishek/simple-fio.git
-2. cd simple-fio/
+1. git clone https://github.com/bose-abhishek/simple-fio_v2.git
+2. cd simple-fio_v2/
 3. Edit config file and set the appropriate parameters required. Described in detail in the next section.
 4. Add consumers in the consumers.lst if using HCP.
 5. sh 01_prepare_setup.sh
