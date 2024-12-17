@@ -66,6 +66,8 @@ run_test () {
 if [ $platform == "bm" ]; then
 	run_test
 elif [ $platform == "hcp" ]; then
+	# Switch to the main / base / provider cluster
+	oc config use admin
 	for consumer in $(cat consumers.lst)
 	do
 		oc config use $consumer
