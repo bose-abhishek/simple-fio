@@ -38,7 +38,7 @@ if [ $platform == "bm" ]; then
 elif [ $platform == "hcp" ]; then
         for consumer in $(cat consumers.lst)
         do
-                oc config use $consumer
+#                oc config use $consumer
                 delete_setup
         done
 
