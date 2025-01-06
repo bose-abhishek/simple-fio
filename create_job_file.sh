@@ -45,6 +45,7 @@ fi
 echo -e "[fio_test]" >> ${file}
 echo "rw=\${RW}" >> ${file}
 echo "bs=\${BS}" >> ${file}
+grep "^rwmixread" config.file >> ${file}
 grep "^time_based" config.file >> ${file}
 grep "^runtime" config.file >> ${file}
 grep "^iodepth" config.file >> ${file}
