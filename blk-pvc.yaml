@@ -4,11 +4,7 @@ metadata:
   name: fio-pv-claim${srv}
   namespace: simple-fio
 spec:
-<<<<<<< HEAD
-  storageClassName: ${storage_type}
-=======
   storageClassName: ${sc}
->>>>>>> source/main
   volumeMode: Block
   accessModes:
     - ReadWriteOnce
