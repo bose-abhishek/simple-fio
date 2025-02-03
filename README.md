@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # simple-fio
 As the name suggests, this is a simplified implementation of fio to be executed in a Kubernetes/Openshift environment without any bells and whistles of Elastic search, Grafana or any framework integration. 
 
@@ -10,11 +11,34 @@ This can be used to quickly run some fio tests in a Kubernetes/Openshift environ
 4. sh simple_fio.sh
 5. Once the test is over, execute the delete script (sh delete_simple_fio.sh) to delete the test setup (fio server and client pods).
 6. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (sh nuke_simple-fio.sh). 
+=======
+# simple-fio_v2
+The purpose of this software is to provide a simple mechanism to perform fio tests on Openshift Data Foundation (ODF) without the need for additional configurations.
+
+This repo is an improved version of [simple-fio](https://github.com/bose-abhishek/simple-fio) and will eventually replace it. The test architecture has been revamped to separate the initial configuration + prefill from testing.
+
+In this version we support testing on native ODF and also ODF on HCP clusters.
+
+## How to run
+1. git clone https://github.com/bose-abhishek/simple-fio_v2.git
+2. cd simple-fio_v2/
+3. Edit config file and set the appropriate parameters required. Described in detail in the next section.
+4. Add consumers in the consumers.lst if using HCP.
+5. sh 01_prepare_setup.sh
+6. Once the prefill is complete, execute sh 02_run_tests.sh
+7. Once the test is over, execute the delete script (sh delete_simple_fio.sh) to delete the test setup (fio server and client pods).
+8. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (sh nuke_simple-fio.sh). 
+>>>>>>> source/main
 
 ## Test Configuration
 To execute a fio test, one needs to only change the parameters in the config.file.
 There are three sections in the config.file:
 1. OCS Parameters
+<<<<<<< HEAD
+=======
+   - platform: This option is to select on which platform the test will be executed. It can be either the native ODF (bm) or in the Hosted Control Plane.
+     * options: bm | hcp
+>>>>>>> source/main
    - storage_type: This defines the undelying storage class to be used.
      * options: ocs-storagecluster-ceph-rbd | ocs-storagecluster-cephfs
 
@@ -24,7 +48,11 @@ There are three sections in the config.file:
    - prefill: To perform prefill or not for RBD volumes
      * options: true | false
    - storage(Gi): size of each PVC (should be larger than 'numjob x fio volume/file size')
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> source/main
 3. FIO parameters: These parameters are used exactly as defined in the [FIO documentation](https://fio.readthedocs.io/en/latest/fio_doc.html)
    - [direct](https://fio.readthedocs.io/en/latest/fio_doc.html#cmdoption-arg-direct): If value is true, use non-buffered I/O. This is usually O_DIRECT.
    - [rw](https://fio.readthedocs.io/en/latest/fio_doc.html#cmdoption-arg-readwrite): Type of I/O pattern. Multiple workloads can be specified at a time. Workloads will run sequentially as mentioned in the config file.
@@ -44,6 +72,7 @@ There are three sections in the config.file:
 * Apart from the above mentioned fio parameters, few of the parameters are automatically set in the fio job file depending on the workload type.
     * When `rw` is set as `write`, `fsync_on_close=1` and `create_on_open=1` is applied.
     * When `rw` is set as any random workload, `randrepeat=0` and `allrandrepeat=0` is applied.
+<<<<<<< HEAD
   
 ## Check output
 
@@ -110,3 +139,5 @@ total 328
 -rw-r--r--. 1 1000710000 1000710000 81920 Nov 21 11:20 fio_8k_randread_sample2_23_11_21_11_20.tar
 -rw-r--r--. 1 1000710000 1000710000  7862 Nov 21 11:13 prefill_output.log
 ```
+=======
+>>>>>>> source/main
