@@ -50,3 +50,34 @@ There are three sections in the config.file:
 * Apart from the above mentioned fio parameters, few of the parameters are automatically set in the fio job file depending on the workload type.
     * When `rw` is set as `write`, `fsync_on_close=1` and `create_on_open=1` is applied.
     * When `rw` is set as any random workload, `randrepeat=0` and `allrandrepeat=0` is applied.
+
+## How to check results
+
+### All clients average results 
+```
+$ oc logs fio-client -f
+Initializing and Configuring FIO jobs
+*********Prefill**************
+All clients: (groupid=0, jobs=3): err= 0: pid=0: Tue Nov 21 11:13:16 2023
+  write: IOPS=968, BW=121Mi (127M)(60.0GiB/507636msec); 0 zone resets
+    slat (usec): min=3, max=3010, avg=79.17, stdev=89.26
+    clat (usec): min=3059, max=64052, avg=12252.21, stdev=2690.49
+     lat (usec): min=3193, max=64210, avg=12331.38, stdev=2689.03
+   bw (  KiB/s): min=71680, max=254976, per=99.98%, avg=124514.84, stdev=797.60, samples=12112
+   iops        : min=  560, max= 1992, avg=972.70, stdev= 6.23, samples=12112
+```
+### Detailed fio output
+For detailed fio output or to check fio output of previous fio run, one can view the fio output directory stored in the pvc `fio-data-pvc`
+```
+# oc rsh fio-storage
+
+sh-4.2# ls -l /mnt
+total 328
+-rw-r--r--. 1 1000710000 1000710000 81920 Nov 21 11:23 fio_16k_randread_sample1_23_11_21_11_23.tar
+-rw-r--r--. 1 1000710000 1000710000 81920 Nov 21 11:26 fio_16k_randread_sample2_23_11_21_11_26.tar
+-rw-r--r--. 1 1000710000 1000710000 81920 Nov 21 11:17 fio_8k_randread_sample1_23_11_21_11_17.tar
+-rw-r--r--. 1 1000710000 1000710000 81920 Nov 21 11:20 fio_8k_randread_sample2_23_11_21_11_20.tar
+-rw-r--r--. 1 1000710000 1000710000  7862 Nov 21 11:13 prefill_output.log
+```
+
+
