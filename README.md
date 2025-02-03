@@ -1,5 +1,5 @@
-# simple-fio_v2
-The purpose of this software is to provide a simple mechanism to perform fio tests on Openshift Data Foundation (ODF) without the need for additional configurations.
+# simple-fio
+The purpose of this software is to provide a simple mechanism to perform fio tests on Openshift Data Foundation (ODF) and other Kubernetes supported storageclass without the need for additional configurations.
 
 This repo is an improved version of [simple-fio](https://github.com/bose-abhishek/simple-fio) and will eventually replace it. The test architecture has been revamped to separate the initial configuration + prefill from testing.
 
