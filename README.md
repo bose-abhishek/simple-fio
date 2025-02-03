@@ -1,13 +1,13 @@
 # simple-fio
 The purpose of this software is to provide a simple mechanism to perform fio tests on Openshift Data Foundation (ODF) and other Kubernetes supported storageclass without the need for additional configurations.
 
-This repo is an improved version of [simple-fio](https://github.com/bose-abhishek/simple-fio) and will eventually replace it. The test architecture has been revamped to separate the initial configuration + prefill from testing.
+The architecture of this tool has been designed such that the initial configuration and prefill is separate from testing.
 
-In this version we support testing on native ODF and also ODF on HCP clusters.
+In this version we support testing of pods on native ODF and also ODF on HCP clusters.
 
 ## How to run
-1. git clone https://github.com/bose-abhishek/simple-fio_v2.git
-2. cd simple-fio_v2/
+1. git clone https://github.com/bose-abhishek/simple-fio.git
+2. cd simple-fio/
 3. Edit config file and set the appropriate parameters required. Described in detail in the next section.
 4. Add consumers in the consumers.lst if using HCP.
 5. sh 01_prepare_setup.sh
