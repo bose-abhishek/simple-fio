@@ -1,21 +1,10 @@
 # OCS Parameters
 #---------------
-<<<<<<< HEAD
-storage_type=ocs-storagecluster-ceph-rbd
-=======
 storage_type=ceph-rbd
->>>>>>> source/main
 #storage_type=ocs-storagecluster-cephfs
 
 # FIO Execution Parameters
 #-------------------------
-<<<<<<< HEAD
-server=3
-sample=1
-# Prefill options: true|false
-prefill=true
-# Storage size should be larger than 'numjob x size'; make sure there is no invisible trailing characters
-=======
 # platform options: bm|hcp (bm: baremetal, hcp: Hosted Control Planes)
 platform=hcp
 # If hcp option is selected, make sure that consumers.lst is properly 
@@ -27,7 +16,6 @@ sample=3
 prefill=true
 # Storage size should be larger than 'numjob x size'; make sure there 
 # is no invisible trailing characters
->>>>>>> source/main
 storage(Gi)=200
 
 #----------------------------------------------
@@ -35,19 +23,6 @@ storage(Gi)=200
 # filename=/dev/rbd0	# Fixed for ocs-storagecluster-ceph-rbd
 # directory=/mnt/pvc	# Fixed for ocs-storagecluster-cephfs
 #----------------------------------------------
-<<<<<<< HEAD
-direct=1
-rw=read
-# multiple block sizes can be mentioned with space separated
-bs=4096K
-numjobs=8
-time_based=1
-runtime=300
-size=10G
-iodepth=4
-log_avg_msec=5000
-#rate_iops=100 ==> Plan to include in the processing file.
-=======
 
 # FIO Parameters 
 #---------------
@@ -70,4 +45,3 @@ log_avg_msec=5000
 # For Fixed IOPS
 # rate_iops=1000
 # --------------
->>>>>>> source/main

@@ -17,68 +17,15 @@ spec:
           - ALL
       resources:
         requests:
-<<<<<<< HEAD
-          memory: "5Gi"
-          cpu: "2"
-        limits:
-          memory: "8Gi"
-          cpu: "3"
-=======
           memory: "1Gi"
           cpu: "1"
         limits:
           memory: "1Gi"
           cpu: "1"
->>>>>>> source/main
       name: fio-client
       volumeMounts:
         - name: data-vol
           mountPath: "/mnt/"
-<<<<<<< HEAD
-      command: ["/bin/sh", "-c"]
-      args: 
-        - "echo \"Initializing and Configuring FIO jobs\"; sleep 30;
-          source /tmp/job_info.txt;
-          if [ ${prefill} == \"true\" ]; then
-            echo \"*********Prefill**************\"; echo $(date);
-            /usr/bin/fio --output=/mnt/prefill_output.log --client=/tmp/server_ip.txt /tmp/prefill.fio;
-            sleep 10;
-            if [[ ${server} -eq 1 ]]; then
-                grep -A6 \"^fio_test\" /mnt/prefill_output.log;
-              else
-                grep -A6 \"^All clients\" /mnt/prefill_output.log;
-              fi;
-	    sleep 60;
-          fi;
-      itr=1;
-      for wl_count in $(seq 1 ${num_of_wl});
-      do
-	      for bs_count in $(seq 1 ${num_of_bs});
-        do
-            for iter in $(seq 1 ${sample});
-            do
-              echo \" \"; echo \"*********Fio_Job**************\" ;
-              mkdir /mnt/fio; cd /mnt/fio;
-              bs=`grep ^bs /tmp/job${itr}.fio | awk -F \"=\" '{print $2}'`;
-              rw=`grep ^rw /tmp/job${itr}.fio | awk -F \"=\" '{print $2}'`;
-              numjobs=`grep ^numjobs /tmp/job${itr}.fio | awk -F \"=\" '{print $2}'`;
-              iodepth=`grep ^iodepth /tmp/job${itr}.fio | awk -F \"=\" '{print $2}'`;
-              echo \"$(date) Sample=${iter}; Block_Size=${bs}; job=${rw}; numjobs=${numjobs}; iodepth=${iodepth}\" ;
-              /usr/bin/fio --output=summary.log --client=/tmp/server_ip.txt /tmp/job${itr}.fio;
-              sleep 10;
-              if [[ ${server} -eq 1 ]]; then
-                grep -A6 \"^fio_test\" summary.log;
-              else
-                grep -A6 \"^All clients\" summary.log;
-              fi;
-              sleep 50;
-              cd ..; mv fio fio_${bs}_${rw}_sample${iter}_$(date +%y_%m_%d_%H_%M); rm -rf fio;
-	          done;
-            itr=$(($itr+1));
-          done;
-        done;
-        "
-=======
         - name: cm-server-ip
           mountPath: /media
         - name: cm-fio-job-info
@@ -127,13 +74,10 @@ spec:
             done;
           done;
           "
->>>>>>> source/main
   volumes:
     - name: data-vol
       persistentVolumeClaim:
         claimName: fio-data-pvc
-<<<<<<< HEAD
-=======
     - name: cm-server-ip
       configMap:
         name: fio-server-ip
@@ -143,5 +87,4 @@ spec:
     - name: cm-fio-test-job
       configMap:
         name: fio-test-job
->>>>>>> source/main
   restartPolicy: Never
