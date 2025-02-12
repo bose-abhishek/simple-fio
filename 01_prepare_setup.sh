@@ -3,9 +3,9 @@
 /bin/bash create_job_file.sh
 
 server=`grep "^server" config.file | awk -F "=" '{print $2}'`
-#sample=`grep "^sample" config.file | awk -F "=" '{print $2}'`
 storage=`grep "^storage(Gi)" config.file | awk -F "=" '{print $2}'`
-storage_type=`grep "^storage_type" config.file | awk -F "=" '{print $2}'`
+storage_class=`grep "^storageclass" config.file | awk -F "=" '{print $2}'`
+volume_mode=`grep "^volumemode" config.file | awk -F "=" '{print $2}'`
 platform=`grep "^platform" config.file | awk -F "=" '{print $2}'`
 
 #export sample=${sample}
@@ -28,15 +28,15 @@ run_test () {
 	for ((i=0;i<$server;i++));
 	do
 		export srv=${i}
-		if [[ `grep "^storage_type" config.file | awk -F "=" '{print $2}'` =~ "ceph-rbd" ]]; then
-			sc=$(oc get sc | grep rbd | awk '{print $1}')
+		if [[ ${volume_mode} =~ "Block" ]]; then
+			sc=${storage_class}
 			export sc=${sc}
 			envsubst < blk-pvc.yaml | oc create -f -
 			sleep 20
 			envsubst < blk-server.yaml | oc create -f -
 		
-		elif [[ `grep "^storage_type" config.file | awk -F "=" '{print $2}'` =~ "cephfs" ]]; then
-			sc=$(oc get sc | grep cephfs | awk '{print $1}')
+		elif [[ ${volume_mode} =~ "Filesystem" ]]; then
+			sc=${storage_class}
 			export sc=${sc}
 			envsubst < fs-pvc.yaml | oc create -f -
 			sleep 20
