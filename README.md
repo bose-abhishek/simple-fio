@@ -10,10 +10,12 @@ In this version we support testing of pods on native ODF and also ODF on HCP clu
 2. cd simple-fio/
 3. Edit config file and set the appropriate parameters required. Described in detail in the next section.
 4. Add consumers in the consumers.lst if using HCP.
-5. sh 01_prepare_setup.sh
-6. Once the prefill is complete, execute sh 02_run_tests.sh
-7. Once the test is over, execute the delete script (sh delete_simple_fio.sh) to delete the test setup (fio server and client pods).
-8. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (sh nuke_simple-fio.sh). 
+5. Execute the setup prepare script `sh 01_prepare_setup.sh`
+6. Once the prefill is complete, execute `sh 02_run_tests.sh`. To run additional tests, you may change the fio parameters in the config file and re-execute `sh 02_run_tests.sh`.
+
+   **Note**: numjobs & size cannot be changed in this step. To change these parameters you may need to execute the delete script and re-run `sh 01_prepare_setup.sh`
+7. Once the test is over, execute the delete script (`sh delete_simple_fio.sh`) to delete the test setup (fio server and client pods).
+8. To delete the project, execute the nuke script. This will delete the namespace, fio storage along with all the stored data (`sh nuke_simple-fio.sh`). 
 
 ## Test Configuration
 To execute a fio test, one needs to only change the parameters in the config.file.
