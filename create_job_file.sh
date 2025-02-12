@@ -25,13 +25,15 @@ grep "^direct" config.file >> ${file}
 grep "^numjobs" config.file >> ${file}
 grep "^size" config.file >> ${file}
 
-if [[ `grep "^storage_type" config.file | awk -F "=" '{print $2}'` =~ "ceph-rbd" ]]; then
-	echo "filename=/dev/rbd" >> ${file}
-elif [[ `grep "^storage_type" config.file | awk -F "=" '{print $2}'` =~ "cephfs" ]]; then
-	echo "directory=/mnt/pvc" >> ${file}
-	prefill=false
+volume_mode=`grep "^volumemode" config.file | awk -F "=" '{print $2}'`
+
+if [[ ${volume_mode} =~ "Block" ]]; then
+        echo "filename=/dev/rbd" >> ${file}
+elif [[ ${volume_mode} =~ "Filesystem" ]]; then
+        echo "directory=/mnt/pvc" >> ${file}
+        prefill=false
 else
-	echo "Job file not configured properly as storage_type in config file is unknown"
+        echo "Job file not configured properly as volume mode in config file is not set properly."
 fi
 
 echo "" >> ${file}
@@ -40,7 +42,6 @@ if [[ $prefill == "true" ]]; then
 	cp ${file} ${pfile}
 	echo -e "[fio_test] \ntime_based=0 \nrw=write \nbs=256K \niodepth=1 \ncreate_on_open=1 \nfsync_on_close=1 \ngroup_reporting" >> ${pfile}
 fi
-
 
 echo -e "[fio_test]" >> ${file}
 echo "rw=\${RW}" >> ${file}
@@ -58,22 +59,20 @@ grep "^rate_iops" config.file >> ${file}
 # For write workload, the parameters have been imported from Benchmark Operator
 # For random workloads, the parameters have been imported from ODF QE CI job file
 #--------------------------------------------------------------------------------
-#if [ $job == "write" ]; then
-#	echo "fsync_on_close=1" >> ${file}
-#       	echo "create_on_open=1" >> ${file}
-#elif [[ $job =~ ^[rand*] ]]; then
-# 	echo "randrepeat=0" >> ${file}
-#       	echo "allrandrepeat=0" >> ${file}
-#fi
+if [ $job == "write" ]; then
+	echo "fsync_on_close=1" >> ${file}
+      	echo "create_on_open=1" >> ${file}
+elif [[ $job =~ ^[rand*] ]]; then
+ 	echo "randrepeat=0" >> ${file}
+       	echo "allrandrepeat=0" >> ${file}
+fi
 #-------------------------------------------------------------------------------
-	
 grep "^log_avg_msec" config.file >> ${file}
 echo -e "write_iops_log=iops" >> ${file}
 echo -e "write_lat_log=latency" >> ${file}
 echo "group_reporting" >> ${file}
 iter=$(($iter+1))
 #
-
 #--------------------------------------------------------
 
 server=`grep "^server" config.file | awk -F "=" '{print $2}'`
