@@ -1,19 +1,22 @@
 # OCS Parameters
 #---------------
-storage_type=ceph-rbd
-#storage_type=ocs-storagecluster-cephfs
-
+storageclass=ocs-storagecluster-cephfs
+#
+## volumemode: Block | Filesystem ( depends on the storageclass)
+volumemode=Filesystem
+#
 # FIO Execution Parameters
 #-------------------------
 # platform options: bm|hcp (bm: baremetal, hcp: Hosted Control Planes)
-platform=hcp
+platform=bm
 # If hcp option is selected, make sure that consumers.lst is properly 
 # populated with cluster kubeconfig contexts
+#
 server=3
 sample=3
-
+#
 # Prefill options: true|false (not applicable for filesystem based storage)
-prefill=true
+prefill=false
 # Storage size should be larger than 'numjob x size'; make sure there 
 # is no invisible trailing characters
 storage(Gi)=200
