@@ -4,7 +4,7 @@ metadata:
   name: fio-data-pvc
   namespace: simple-fio
 spec:
-  storageClassName: ${sc_type}
+  storageClassName: ${storage_class}
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany

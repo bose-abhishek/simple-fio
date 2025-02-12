@@ -53,7 +53,7 @@ grep "^iodepth" config.file >> ${file}
 grep "^rate_iops" config.file >> ${file}
 
 #job=${workload}	
-#job=`grep "^rw" config.file | head -n1 | awk -F "=" '{print $2}'`
+job=`grep "^rw=" config.file | head -n1 | awk -F "=" '{print $2}'`
 		
 # Additional FIO parameters based on job/workload
 # For write workload, the parameters have been imported from Benchmark Operator
