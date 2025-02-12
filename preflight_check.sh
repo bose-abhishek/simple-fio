@@ -16,9 +16,9 @@ fi
 # Check fio storage pod is up
 #----------------------------
 if [[ $(oc get pvc | grep fio-data-pvc | awk '{print $1}') != "fio-data-pvc" ]];
-        then
-        sc_type=$(oc get sc | grep cephfs | awk '{print $1}')
-        export sc_type=${sc_type}
+then
+	storage_class=$(grep "^storageclass" config.file | awk -F "=" '{print $2}')
+        export storage_class=${storage_class}
         envsubst < fio-data-pvc.yaml | oc create -f -
         #oc create -f fio-data-pvc.yaml
 fi
