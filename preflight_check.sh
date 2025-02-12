@@ -8,7 +8,7 @@ then
 else
         echo "Creating project simple-fio"
         oc create namespace ${namespace}
-        oc project ${namespace}
+        oc project ${namespace} > /dev/null
 
 fi
 

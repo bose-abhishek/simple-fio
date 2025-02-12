@@ -59,7 +59,7 @@ job=`grep "^rw=" config.file | head -n1 | awk -F "=" '{print $2}'`
 # For write workload, the parameters have been imported from Benchmark Operator
 # For random workloads, the parameters have been imported from ODF QE CI job file
 #--------------------------------------------------------------------------------
-if [ $job == "write" ]; then
+if [[ $job == "write" ]]; then
 	echo "fsync_on_close=1" >> ${file}
       	echo "create_on_open=1" >> ${file}
 elif [[ $job =~ ^[rand*] ]]; then
