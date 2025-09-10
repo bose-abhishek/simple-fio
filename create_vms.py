@@ -10,12 +10,23 @@ config.load_kube_config()
 
 num = int(sys.argv[1])
 #num = "%03d" % numVM
+
+def get_sc(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith(f"storageclass="):
+                return line.strip().split('=', 1)[1]
+    return none
+
+sc_name = get_sc("config.file")
+
 for vm in range(num):
     
     vm = "%03d" % vm
     data = {
         "vm_name": "fedora"+str(vm),
-        "dv_name": "dv-fedora"+str(vm)
+        "dv_name": "dv-fedora"+str(vm),
+        "sc_name": sc_name
     }
 
     with open('fedora.yaml.j2', 'r') as template_file:
