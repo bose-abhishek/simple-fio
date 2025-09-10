@@ -4,13 +4,19 @@
 namespace="simple-fio"
 if [ `oc get project | grep ${namespace} | awk '{print $1}'` ]
 then
-        oc project ${namespace} > /dev/null
+        oc project ${namespace} > /dev/null 2>&1
 else
-        echo "Creating project simple-fio"
+        echo "Creating project ${namespace}"
         oc create namespace ${namespace}
-        oc project ${namespace} > /dev/null
+        oc project ${namespace} > /dev/null 2>&1
 
 fi
+unit=`grep "^unit" config.file | awk -F "=" '{print $2}'`
+if [ $unit == "vm" ]; then
+	echo "Checking for python packages"
+        pip install -r requirements.txt > /dev/null 2>&1
+fi
+
 
 #============================
 # Check fio storage pod is up

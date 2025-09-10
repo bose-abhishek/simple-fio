@@ -1,0 +1,106 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    vm.kubevirt.io/os: fedora
+    vm.kubevirt.io/workload: highperformance
+  labels:
+    kubevirt.io/domain: {{vm_name}}
+    network.kubevirt.io/headlessService: headless
+  name: {{vm_name}}
+  namespace: simple-fio
+spec:
+  dataVolumeTemplates:
+  - apiVersion: cdi.kubevirt.io/v1beta1
+    kind: DataVolume
+    metadata:
+      name: {{dv_name}}
+    spec:
+      source:
+      # registry:
+        # url: "docker://quay.io/containerdisks/fedora:40"
+        http:
+          #url: http://dl.fedoraproject.org/pub/fedora/linux/releases/41/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41-1.4.x86_64.qcow2
+          url: http://perfscale.perf.eng.bos2.dc.redhat.com/pub/abose/Fedora-Cloud-Base-Generic-42-1.1.x86_64.qcow2
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        volumeMode: Block
+        storageClassName: lvms-iscsi
+  accessCredentials:
+  - sshPublicKey:
+      propagationMethod:
+        noCloud: {}
+  runStrategy: RerunOnFailure
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: {{vm_name}}
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 1
+          sockets: 4
+          threads: 1
+          #maxSockets: 4
+          model: host-model
+        memory:
+          guest: 4Gi
+        resources:
+          requests:
+            memory: 4Gi
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: rootdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          interfaces:
+          - name: default
+            masquerade: {}
+            model: virtio
+          #- bridge: {}
+            #model: virtio
+            #name: nic-migration
+          rng: {}
+        features:
+          acpi:
+            enabled: true
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi: {}
+        machine:
+          type: pc-q35-rhel9.4.0
+      evictionStrategy: LiveMigrate
+      networks:
+      - name: default
+        pod: {}
+      #- multus:
+          #networkName: vm-nad
+        #name: nic-migration
+      terminationGracePeriodSeconds: 180
+      volumes:
+      - dataVolume:
+          name: {{dv_name}}
+        name: rootdisk
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            user: fedora
+            password: fedora
+            chpasswd: { expire: False }
+            packages:
+              - fio
+              - wget
+            runcmd:
+              - [ wget, https://gist.githubusercontent.com/bose-abhishek/82143fe028599aac41e9fb0dbdf8ef95/raw/681c392e78694d65cd87128b39a83b4a6f4467c9/fio-startup-script.sh ]
+              - [ sh, fio-startup-script.sh ]
+        name: cloudinitdisk
