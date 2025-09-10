@@ -28,7 +28,7 @@ spec:
           requests:
             storage: 50Gi
         volumeMode: Block
-        storageClassName: lvms-iscsi
+        storageClassName: {{sc_name}}
   accessCredentials:
   - sshPublicKey:
       propagationMethod:
