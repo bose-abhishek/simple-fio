@@ -1,6 +1,6 @@
-# OCS Parameters
+# Storage Parameters
 #---------------
-storageclass=ocs-storagecluster-cephfs
+storageclass=lvms-iscsi
 #
 ## volumemode: Block | Filesystem ( depends on the storageclass)
 volumemode=Filesystem
@@ -9,17 +9,21 @@ volumemode=Filesystem
 #-------------------------
 # platform options: bm|hcp (bm: baremetal, hcp: Hosted Control Planes)
 platform=bm
-# If hcp option is selected, make sure that consumers.lst is properly 
+# If hcp option is selected, make sure that hcp_consumers.lst is properly 
 # populated with cluster kubeconfig contexts
 #
-server=3
-sample=3
+# unit option: pod | vm 
+unit=vm
+# ----------------------
+#
+server=2
+sample=1
 #
 # Prefill options: true|false (not applicable for filesystem based storage)
 prefill=false
 # Storage size should be larger than 'numjob x size'; make sure there 
 # is no invisible trailing characters
-storage(Gi)=200
+storage(Gi)=50
 
 #----------------------------------------------
 # ioengine=libaio	# Fixed
@@ -30,21 +34,22 @@ storage(Gi)=200
 # FIO Parameters 
 #---------------
 # 'rw' and 'bs' parameters support multiple arguments separated by space
-rw=randwrite randread
-bs=4K 8K 16K
-iodepth=8
-numjobs=4
-size=10G
+rw=randwrite
+bs=4K
+iodepth=64
+numjobs=1
+size=5G
 direct=1
 time_based=1
+#ramp_time=180
 runtime=300
 log_avg_msec=5000
 
 ## More supported fio parameters:
 # For Mixed read/write IOPS
-# rw=randrw
-# rwmixread=70
+#rw=randrw
+#rwmixread=70
 # --------------
 # For Fixed IOPS
-# rate_iops=1000
+#rate_iops=1000
 # --------------

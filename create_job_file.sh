@@ -30,7 +30,7 @@ volume_mode=`grep "^volumemode" config.file | awk -F "=" '{print $2}'`
 if [[ ${volume_mode} =~ "Block" ]]; then
         echo "filename=/dev/rbd" >> ${file}
 elif [[ ${volume_mode} =~ "Filesystem" ]]; then
-        echo "directory=/mnt/pvc" >> ${file}
+        echo "directory=/mnt/" >> ${file}
         prefill=false
 else
         echo "Job file not configured properly as volume mode in config file is not set properly."
@@ -48,6 +48,7 @@ echo "rw=\${RW}" >> ${file}
 echo "bs=\${BS}" >> ${file}
 grep "^rwmixread" config.file >> ${file}
 grep "^time_based" config.file >> ${file}
+grep "^ramp_time" config.file >> ${file}
 grep "^runtime" config.file >> ${file}
 grep "^iodepth" config.file >> ${file}
 grep "^rate_iops" config.file >> ${file}
