@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: {{vm_name}}-fio
   namespace: simple-fio
+  labels:
+    app: simple-fio
 spec:
   ports:
   - protocol: TCP

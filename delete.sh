@@ -81,7 +81,7 @@ delete_test_main
 if [ $unit == "vm" ]; then
 	for vmi in $(oc get vmi -oname -n simple-fio); do oc -n simple-fio delete $vmi; done
 	for vm in $(oc get vm -oname -n simple-fio); do oc -n simple-fio delete $vm; done
-	for svc in $(oc get svc -oname -n simple-fio); do oc -n simple-fio delete $svc; done
+	for svc in $(oc get svc -oname -n simple-fio | grep fedora); do oc -n simple-fio delete $svc; done
 fi
 
 if [ $platform == "bm" ]; then

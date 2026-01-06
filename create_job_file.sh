@@ -25,11 +25,15 @@ grep "^direct" config.file >> ${file}
 grep "^numjobs" config.file >> ${file}
 grep "^size" config.file >> ${file}
 
+unit=`grep "^unit" config.file | awk -F "=" '{print $2}'`
 volume_mode=`grep "^volumemode" config.file | awk -F "=" '{print $2}'`
 
-if [[ ${volume_mode} =~ "Block" ]]; then
+if [[ ${unit} == "vm" ]]; then
+	echo "directory=/mnt/" >> ${file}
+	prefill=false
+elif [[ ${volume_mode} =~ "Block" && ${unit} == "pod" ]]; then
         echo "filename=/dev/rbd" >> ${file}
-elif [[ ${volume_mode} =~ "Filesystem" ]]; then
+elif [[ ${volume_mode} =~ "Filesystem" && ${unit} == "pod" ]]; then
         echo "directory=/mnt/" >> ${file}
         prefill=false
 else

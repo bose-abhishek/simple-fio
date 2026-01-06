@@ -32,4 +32,7 @@ if [[ $(oc get pods | grep fio-storage | awk '{print $1}') != "fio-storage" ]];
         then
         oc apply -f fio-storage.yaml
 fi
-
+if [[ $(oc get pods | grep fio-visualizer | awk '{print $1}') != "fio-visualizer" ]];
+        then
+        oc apply -f fio-visualizer.yaml
+fi

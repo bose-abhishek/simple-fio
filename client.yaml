@@ -55,8 +55,9 @@ spec:
                 elif [[ $rw =~ ^[rand*] ]]; then echo \"randrepeat=0\" >> /mnt/fio/job.fio; echo \"allrandrepeat=0\" >> /mnt/fio/job.fio;
                 fi;
                 echo \"$(date) Sample=${iter}; Server=${server}; Block_Size=${bs}; Job=${rw}; Numjobs=${numjobs}; IOdepth=${iodepth}\" ;
-                BS=${bs} RW=${rw} /usr/bin/fio --output=summary.log --client=/media/server_ip.txt /mnt/fio/job.fio;
-                sleep 30; 
+                BS=${bs} RW=${rw} /usr/bin/fio  --output-format=normal,json --output=summary.json --client=/media/server_ip.txt /mnt/fio/job.fio --eta-interval=600;
+                sleep 10;
+                sh /split_fio_logs.sh summary.json;
                 if [[ ${rw} == \"randrw\" ]]; then 
                   line=12;
                 else 
