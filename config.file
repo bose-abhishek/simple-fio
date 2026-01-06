@@ -1,9 +1,12 @@
 # Storage Parameters
 #---------------
-storageclass=lvms-iscsi
+storageclass=ocs-storagecluster-ceph-rbd
 #
 ## volumemode: Block | Filesystem ( depends on the storageclass)
-volumemode=Filesystem
+volumemode=Block
+#
+## accessmode: ReadWriteOnce | ReadWriteMany (applicable only for VMs)
+accessmode=ReadWriteMany
 #
 # FIO Execution Parameters
 #-------------------------

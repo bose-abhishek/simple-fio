@@ -17,17 +17,16 @@ spec:
       name: {{dv_name}}
     spec:
       source:
-      # registry:
-        # url: "docker://quay.io/containerdisks/fedora:40"
         http:
-          url: http://dl.fedoraproject.org/pub/fedora/linux/releases/41/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41-1.4.x86_64.qcow2
+          #url: http://dl.fedoraproject.org/pub/fedora/linux/releases/41/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41-1.4.x86_64.qcow2
+          url: http://dl.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2
       storage:
         accessModes:
-        - ReadWriteOnce
+        - {{access_mode | default('ReadWriteOnce')}}
         resources:
           requests:
             storage: 50Gi
-        volumeMode: Block
+        volumeMode: {{volume_mode | default('Block')}}
         storageClassName: {{sc_name}}
   accessCredentials:
   - sshPublicKey:

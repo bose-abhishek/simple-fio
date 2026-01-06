@@ -17,8 +17,22 @@ def get_sc(file_path):
             if line.startswith(f"storageclass="):
                 return line.strip().split('=', 1)[1]
     return none
+def get_am(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith(f"accessmode="):
+                return line.strip().split('=', 1)[1]
+    return none
+def get_vm(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith(f"volumemode="):
+                return line.strip().split('=', 1)[1]
+    return none
 
 sc_name = get_sc("config.file")
+acc_mode = get_am("config.file")
+vol_mode = get_vm("config.file")
 
 for vm in range(num):
     
@@ -26,7 +40,9 @@ for vm in range(num):
     data = {
         "vm_name": "fedora"+str(vm),
         "dv_name": "dv-fedora"+str(vm),
-        "sc_name": sc_name
+        "sc_name": sc_name,
+        "access_mode": acc_mode,
+        "volume_mode": vol_mode
     }
 
     with open('fedora.yaml.j2', 'r') as template_file:

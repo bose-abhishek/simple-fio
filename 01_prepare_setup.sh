@@ -40,11 +40,11 @@ setup () {
 		#fi
 
 
-		for ((i=0;i<$server;i++));
-		do
-			serverIP=$(oc get svc -ojsonpath='{.items[?(@.metadata.name!="fio-pod-service")].spec.clusterIP}')
+		#for ((i=0;i<$server;i++));
+		#do
+			serverIP=$(oc get svc -l app=simple-fio -ojsonpath='{.items[?(@.metadata.name!="fio-pod-service")].spec.clusterIP}')
 			echo "$serverIP" >> "$server_ip"
-		done
+		#done
 
 	elif [ $unit == "pod" ]; then
 		for ((i=0;i<$server;i++));
